@@ -28,8 +28,8 @@ int izq = A6;
 int cen = A3;
 int lin = A1;
 
-uint8_t der_v;
-uint8_t izq_v;
+unsigned int der_v;
+unsigned int izq_v;
 bool cen_v;
 bool lin_v;
 
@@ -90,8 +90,8 @@ void inicio_led2(){
 }
 
 void lecturas(){
-  izq_v = analogRead(izq);
-  der_v = analogRead(der);
+  izq_v = 12343.85 * pow(analogRead(izq),-1.15);
+  der_v = 12343.85 * pow(analogRead(izq),-1.15);
   lin_v = digitalRead(lin);
   cen_v = digitalRead(cen);
 }
@@ -120,20 +120,57 @@ void loop() {
     inicio_led1(); //retardo 5 s
     while(1){
       lecturas();    
-
-
-      
-      
+      if(cen_v == 1){
+        adelante(255);  
+      }
+      else if(izq_v <= 50  && der_v <= 50 ){
+        adelante(50);
+      }
+      else if(der_v <= 50  && izq_v > 30 ){
+        derecha(120);
+        sentido = 0;  
+      }
+      else if(izq_v <= 50  && der_v > 30 ){
+        izquierda(120);
+        sentido = 1;
+      }
+      else{
+        if(sentido == 1){
+          izquierda(80);  
+        }
+        else{
+          derecha(80);  
+        }  
+      }
     }
   }
   
   else{ //programacion 2
     inicio_led2(); //retardo 5 s
     while(1){
-      lecturas();
-      
-      
-      
+      lecturas();    
+      if(cen_v == 1){
+        adelante(255);  
+      }
+      else if(izq_v <= 50  && der_v <= 50 ){
+        adelante(50);
+      }
+      else if(der_v <= 50  && izq_v > 30 ){
+        derecha(120);
+        sentido = 0;  
+      }
+      else if(izq_v <= 50  && der_v > 30 ){
+        izquierda(120);
+        sentido = 1;
+      }
+      else{
+        if(sentido == 1){
+          izquierda(80);  
+        }
+        else{
+          derecha(80);  
+        }  
+      }
     }
   }
 
