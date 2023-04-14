@@ -1,5 +1,11 @@
 /*MINISUMO UAM MADRID*/
-
+/**
+ * Autor Alan Cruz
+ * Minisumo hecho con arduino nano y tb6612fng
+ * 
+ * 
+ * 
+ */
 
 
 /*H-bridge*/
@@ -12,21 +18,28 @@ int bin2 = 2;
 int pwmA = 6;
 int pwmB = 5;
 
+//LED
+int led = 13;
 
-/*Switch ports*/
-int switch1 = 7;
-int switch2 = 11; //original
-
-/*auxiliares*/
-int enter, select;
-int sensores[7];
-int go;
-int tiempo = 0;
 
 /*Sensores*/
-//int enables = 8;
-int led = 1;
+int der = A0;
+int izq = A6;
+int cen = A3;
+int lin = A1;
 
+uint8_t der_v;
+uint8_t izq_v;
+bool cen_v;
+bool lin_v;
+
+
+/*Switch*/
+int sw1 = A4;
+
+/*Auxiliars*/
+bool state = 0;
+bool sentido = 0;
 
 /*Directions*/
 void adelante (int velocidad) {
@@ -34,41 +47,94 @@ void adelante (int velocidad) {
   digitalWrite (ain2 , LOW);
   digitalWrite (bin1 , HIGH);
   digitalWrite (bin2 , LOW);
-  analogWrite (pwm1 , velocidad);
-  analogWrite (pwm2 , velocidad);
+  analogWrite (pwmA , velocidad);
+  analogWrite (pwmB , velocidad);
 }
 void atras (int velocidad) {
   digitalWrite (ain1 , LOW);
   digitalWrite (ain2 , HIGH);
   digitalWrite (bin1 , LOW);
   digitalWrite (bin2 , HIGH);
-  analogWrite (pwm1 , velocidad);
-  analogWrite (pwm2 , velocidad);
+  analogWrite (pwmA , velocidad);
+  analogWrite (pwmB , velocidad);
 }
 void derecha (int velocidad) {
   digitalWrite (ain1 , HIGH);
   digitalWrite (ain2 , LOW);
   digitalWrite (bin1 , LOW);
   digitalWrite (bin2 , HIGH);
-  analogWrite (pwm1 , velocidad);
-  analogWrite (pwm2 , velocidad);
+  analogWrite (pwmA , velocidad);
+  analogWrite (pwmB , velocidad);
 }
 void izquierda (int velocidad) {
   digitalWrite (ain1 , LOW);
   digitalWrite (ain2 , HIGH);
   digitalWrite (bin1 , HIGH);
   digitalWrite (bin2 , LOW);
-  analogWrite (pwm1 , velocidad);
-  analogWrite (pwm2 , velocidad);
+
+  analogWrite (pwmA , velocidad);
+  analogWrite (pwmB , velocidad);
 }
 
+void inicio_led1(){
+  for(int i = 0; i < 10;i++){
+      digitalWrite(led,!state);
+      delay(500);
+    }  
+}
+void inicio_led2(){
+  for(int i = 0; i < 5;i++){
+      digitalWrite(led,!state);
+      delay(1000);
+    }  
+}
+
+void lecturas(){
+  izq_v = analogRead(izq);
+  der_v = analogRead(der);
+  lin_v = digitalRead(lin);
+  cen_v = digitalRead(cen);
+}
 
 void setup() {
-  // put your setup code here, to run once:
+  // H bridge
+  pinMode(ain1,OUTPUT);
+  pinMode(ain2,OUTPUT);
+  pinMode(bin1,OUTPUT);
+  pinMode(bin2,OUTPUT);
+  pinMode(pwmA,OUTPUT);
+  pinMode(pwmB,OUTPUT);
+  //Sensors
+  pinMode(der,INPUT);
+  pinMode(izq,INPUT);
+  pinMode(cen,INPUT);
 
+  //switch
+  pinMode(sw1,INPUT);
 }
 
+
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+  if(digitalRead(sw1) == 1){ //programacion 1
+    inicio_led1(); //retardo 5 s
+    while(1){
+      lecturas();    
+
+
+      
+      
+    }
+  }
+  
+  else{ //programacion 2
+    inicio_led2(); //retardo 5 s
+    while(1){
+      lecturas();
+      
+      
+      
+    }
+  }
 
 }
