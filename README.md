@@ -1,6 +1,6 @@
 # minisumoMadrid
 Robot minisumo
-
+Robot minisumo que logró el primer lugar en Malakabot 2023
 
 ## Primer prototipo de placa
 ![image](https://user-images.githubusercontent.com/65994761/232163054-f659791d-e1b9-47b7-8df3-43533924d2b3.png)
